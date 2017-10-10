@@ -1,1 +1,2 @@
 print ("Weeeee lo de ferman, también las Chit Shit son pal viernes")
+print ("Simio arcoiris\n le fui a preguntar en su clase. Que se supone que era para mañana pero que le podemos ir a dejar ese desmadre el viernes")
