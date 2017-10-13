@@ -1,111 +1,117 @@
-#nombreArchivo = input("Dame el nombre del archivo: ");
+nombreArchivo = input("Dame el nombre del archivo: ");
 try:
-    nombreArchivo = "instance_3SAT_example2.txt"
+    #nombreArchivo = "instance_3SAT_example2.txt"
     archivo = open(nombreArchivo,"r");
     lineas = archivo.read();
     lineas = lineas.split("\n");
     archivo.close()
 
-    salida = open("output.txt","w")
+    salidaTemp = open("outputTemp.txt", "w")
 
     numVariables = 0
     numClausulas = 0
     numDummy = 0
+    totalClausulas = 0
 
+    #LECTURA LINEA POR LINEA DEL ARCHIVO DEL USUARIO
     for linea in lineas:
-        valores = linea.split();
-        # COMENTARIO
+        clausula = linea.split();
+        # # COMENTARIO
         if linea[:1] == 'c':
-            salida.write("Esta es la descripcion del problema:\n"+linea+"\n")
+            continue
 
         # VARIABLES
-        elif linea[:1] == 'p':
-            numVariables = int(valores[2])
-            numClausulas = int(valores[3])
+        if linea[:1] == 'p':
+            numVariables = int(clausula[2])
+            numClausulas = int(clausula[3])
             numDummy = numVariables + 1
-            print("Numero de variables: ",numVariables,"\nNumero de clausulas: ",numClausulas)
 
         #CLAUSULAS
         else:
-            salida.write("\nClausula original: "+linea+"\n")
-            valores.remove('0')
-            numVariablesClaus = len(valores)
+            clausula.remove('0')
+            numVariablesClaus = len(clausula)
             nuevaClausula =""
 
             # UNA SOLA VARIABLE
             if (numVariablesClaus == 1):
-                nuevaClausula = valores[0]+" "+valores[0]+" "+valores[0]+" 0\n"
-                salida.write(nuevaClausula)
+                nuevaClausula = clausula[0] + " " + clausula[0] + " " + clausula[0] + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
 
             # DOS VARIABLES
             elif (numVariablesClaus == 2):
-                strDummy = str(numDummy)
-                nuevaClausula = valores[0] + " " + valores[1] + " "+strDummy+" 0\n"
-                salida.write(nuevaClausula)
+                nuevaClausula = clausula[0] + " " + clausula[1] + " " + str(numDummy) + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
 
                 numDummy*=-1
-                strDummy = str(numDummy)
-                nuevaClausula = strDummy+" "+valores[0] + " " + valores[1] + " 0\n"
-                salida.write(nuevaClausula)
+                nuevaClausula = str(numDummy)+" " + clausula[0] + " " + clausula[1] + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
 
                 numDummy *=-1
                 numDummy+=1
 
             #TRES VARIABLES
             elif (numVariablesClaus == 3):
-                nuevaClausula = valores[0] + " " + valores[1] +" " + valores[2] + " 0\n"
-                salida.write(nuevaClausula)
+                nuevaClausula = clausula[0] + " " + clausula[1] + " " + clausula[2] + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
 
             # MAS DE TRES VARIABLES
             else:
-                print ("mas de rees")
-                strDummy = str(numDummy)
-
                 # PRIMERAS DOS VARIABLES Xn
-                nuevaClausula = valores[0] + " " + valores[1] + " " + strDummy + " 0\n"
-                print(nuevaClausula)
-                salida.write(nuevaClausula)
+                nuevaClausula = clausula[0] + " " + clausula[1] + " " + str(numDummy) + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
 
                 # VARIABLES X3 A Xi-2
                 Xn = 2
-                numVarTemp = len(valores) - 2
-                print(valores)
+                numVarTemp = len(clausula) - 2
                 # MIENTRAS QUEDEN TRES O MÁS VARIABLES
                 while numVarTemp > 2:
-                    # print("dummy antes ",numDummy)
-                    # print("xn ",Xn)
-                    # print("numvartemp ", numVarTemp)
-                    # print ("valorVariable ",str(valores[Xn]))
                     numDummySig = numDummy + 1
                     numDummy *= -1
-                    strDummy = str(numDummy)
 
-                    nuevaClausula = strDummy + " " + str(valores[Xn]) + " " + str(numDummySig) + " 0\n"
-                    print(nuevaClausula)
-                    salida.write(nuevaClausula)
+                    nuevaClausula = str(numDummy) + " " + str(clausula[Xn]) + " " + str(numDummySig) + " 0\n"
+                    salidaTemp.write(nuevaClausula)
+                    totalClausulas += 1
                     numDummy = numDummySig
-                    print("dummy depsues ", numDummy)
 
                     numVarTemp -=1
                     Xn +=1
 
                 # ULTIMAS DOS VARIABLES
-                print("ultimas 2")
-                print("dummy antes ",numDummy)
-                print("xn ",Xn)
-                print ("valorVariable ",str(valores[Xn]))
                 numDummy *= -1
-                strDummy = str(numDummy)
-                nuevaClausula = strDummy+ " "+valores[Xn] + " " + valores[Xn + 1] + " 0\n"
-                print(nuevaClausula)
+                nuevaClausula = str(numDummy)+ " " + clausula[Xn] + " " + clausula[Xn + 1] + " 0\n"
+                salidaTemp.write(nuevaClausula)
+                totalClausulas += 1
                 numDummy *= -1
                 numDummy += 1
-                #salida.write(nuevaClausula)
-
 
             # FIN DE LA LINEA/CLAUSULA
             nuevaClausula = ""
-    salida.close()
+    salidaTemp.close()
+
+    # GUARDAR SALIDAS EN UN OUTPUT.TXT
+    salidaTemp = open("outputTemp.txt", "r");
+    cnf = open("instance_3SAT_Output.txt","w");
+
+    cnf.write("c A SAT instance generated from a 3-CNF formula that had "+str(totalClausulas)+
+              " clauses and "+ str(numDummy-1) +" variables\n")
+    cnf.write("p cnf "+str(numDummy-1)+" "+str(totalClausulas)+"\n")
+
+    final = salidaTemp.read()
+    final = final.split("\n")
+
+    for x in range(0,len(final)-1):
+        if (x == len(final)-2):
+            cnf.write(final[x])
+        else:
+            cnf.write(final[x] + "\n")
+
+    salidaTemp.close()
+    cnf.close()
 
 except FileNotFoundError:
         print("No encuentro el archivo");

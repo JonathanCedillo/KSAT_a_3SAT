@@ -1,9 +1,9 @@
-Esta es la descripcion del problema:
 c A SAT instance generated from a 3-CNF formula that had 91 clauses and 20 variables
 
 Clausula original: 9 -3 16 1 5 0
 9 -3 21 0
 -21 16 22 0
+-22 1 5 0
 
 Clausula original: 4 -16 0
 4 -16 23 0
@@ -11,12 +11,14 @@ Clausula original: 4 -16 0
 
 Clausula original: -4 6 5 7 0
 -4 6 24 0
+-24 5 7 0
 
 Clausula original: -6 -5 4 8 4 2 5 0
 -6 -5 25 0
 -25 4 26 0
 -26 8 27 0
 -27 4 28 0
+-28 2 5 0
 
 Clausula original: -6 -12 -13 7 3 6 9 3 5 2 9 2 1 2 5 0
 -6 -12 29 0
@@ -31,6 +33,7 @@ Clausula original: -6 -12 -13 7 3 6 9 3 5 2 9 2 1 2 5 0
 -37 9 38 0
 -38 2 39 0
 -39 1 40 0
+-40 2 5 0
 
 Clausula original: -13 0
 -13 -13 -13 0
