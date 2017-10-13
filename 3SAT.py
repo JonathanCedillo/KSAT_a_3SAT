@@ -1,3 +1,7 @@
+#EQUIPO
+# ALEJANDRO CÁMARA MARTÍNEZ - A01370909
+# JONATHAN SAMUEL CEDILLO BELMÁN - A01377844
+
 nombreArchivo = input("Dame el nombre del archivo: ");
 try:
     #nombreArchivo = "instance_3SAT_example2.txt"
